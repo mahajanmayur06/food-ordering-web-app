@@ -5,8 +5,7 @@ import Header from './utils/Header'
 import { Home } from './pages/Home'
 import MyOrders from './utils/MyOrders'
 import Cart from './pages/Cart'
-import Menu from './pages/Menu'
-import Navbar from './utils/Navbar'
+import Restaurant from './pages/Restaurant'
 import Login from './pages/Login'
 import SignUp from './utils/SignUp'
 
@@ -20,7 +19,7 @@ function App() {
                     <Route path='/' element={< Home/>}/>
                     <Route path='/orders' element={< MyOrders/>}/>
                     <Route path='/cart' element={< Cart/>}/>
-                    <Route path='/menu' element={< Menu/>}/>
+                    <Route path='/restaurant' element={< Restaurant/>}/>
                     <Route path='/login' element={< Login/>}/>
                     <Route path='/signup' element={< SignUp/>}/>
 

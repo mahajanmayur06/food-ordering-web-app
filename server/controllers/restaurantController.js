@@ -25,7 +25,7 @@ const addRestaurant = async (req, res) => {
 }
 
 const restaurantLogin = async (req, res) => {
-    const { name, password } = req.body
+    const { name, password } = req.query
     try {
         const restaurant = await Restaurant.findOne({ name : name })
         if (!restaurant) {
