@@ -4,7 +4,8 @@ import Navbar from './Navbar'
 const Header = () => {
     return (
         <div>
-            Header
+            <div className='text-3xl text-red-800'>hello world </div>            
+            <Navbar/>
         </div>
     )
 }

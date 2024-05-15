@@ -7,18 +7,22 @@ import MyOrders from './utils/MyOrders'
 import Cart from './pages/Cart'
 import Menu from './pages/Menu'
 import Navbar from './utils/Navbar'
+import Login from './pages/Login'
+import SignUp from './utils/SignUp'
 
 function App() {
 
     return (
         <BrowserRouter>
             <div className='app'>
-                <Navbar/>
+                <Header/>
                 <Routes>
                     <Route path='/' element={< Home/>}/>
                     <Route path='/orders' element={< MyOrders/>}/>
                     <Route path='/cart' element={< Cart/>}/>
                     <Route path='/menu' element={< Menu/>}/>
+                    <Route path='/login' element={< Login/>}/>
+                    <Route path='/signup' element={< SignUp/>}/>
 
                 </Routes>
             </div>

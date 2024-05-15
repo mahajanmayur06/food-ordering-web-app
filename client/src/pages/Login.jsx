@@ -1,9 +1,18 @@
-import React from 'react'
+import React from 'react';
+import { useNavigate } from 'react-router-dom'; 
 
 const Login = () => {
-    return (
-        <div>Login</div>
-    )
-}
+    const navigate = useNavigate();
 
-export default Login
+    const handleSignUpClick = () => {
+        navigate('/signup'); 
+    };
+
+    return (
+        <div>
+            <button onClick={() => handleSignUpClick()}>SignUp</button>
+        </div>
+    );
+};
+
+export default Login;
