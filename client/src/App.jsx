@@ -8,6 +8,7 @@ import Cart from './pages/Cart'
 import Restaurant from './pages/Restaurant'
 import Login from './pages/Login'
 import SignUp from './utils/SignUp'
+import Footer from './utils/Footer'
 
 function App() {
 

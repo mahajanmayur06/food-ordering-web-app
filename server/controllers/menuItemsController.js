@@ -3,25 +3,25 @@ import Restaurant from '../models/Restaurant.js'
 import getItemInfo from '../services/itemInfo.js'
 
 const addMenuItem = async (req, res) => {
-    const { name, category, price, providerName } = req.body
+    const { name, category, price, providerName, image } = req.body
     try {
         const provider = await Restaurant.findOne({ name : providerName})
         const item = await MenuItem.create({
             name : name,
             category : category,
             price : price,
-            provider : provider._id
+            provider : provider._id,
+            image : image ? image : null
         })
         provider.menuItems.push(item._id)
         await provider.save()
         console.log(`${name} menu added in ${providerName}`);
-        res.status(201).json({message : 'menu item addede'})
+        res.status(201).json({message : 'menu item added'})
     } catch (err) {
         console.log(err.message);
         res.status(500).json({ message : 'Internal server error'})
     }
 }
-
 
 const getMenuItems = async (req, res) => {
     try {
@@ -81,3 +81,23 @@ const getMenuItemsByrestaurant = async (req, res) => {
         res.status(500).json({ message : 'internal serve error'})
     }
 }
+
+const getMenuItemsByName = async (req, res) => {
+    const { name } = req.query
+    try{
+        const items = await MenuItem.find({ name : name })
+        let menuItems = []
+        if (!items) {
+            res.status(204).json({ message : `No items for name ${name}`})
+        }
+        for (const item of items) {
+            menuItems.push(await getItemInfo(item))
+        }
+        res.status(200).json(menuItems)
+    } catch(err) {
+        console.log(err.message);
+        res.status(500).json({ message : 'Internal server error'})
+    }
+}
+
+export { addMenuItem, getMenuItems, getMenuItemsByCategory, getMenuItemsByrestaurant, getMenuItemsByCategory, getMenuItemsByName}

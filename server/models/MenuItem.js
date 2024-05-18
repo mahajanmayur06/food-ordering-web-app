@@ -6,7 +6,7 @@ const menuItemSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     provider: { type: Schema.Types.ObjectId, ref: 'Restaurant', required: true },
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
-    imageUrl: { type: String }
+    image: { type: String }
 })
 
 const MenuItem = mongoose.model('MenuItem', menuItemSchema)

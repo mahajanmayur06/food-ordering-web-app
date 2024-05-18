@@ -1,9 +1,8 @@
-import MenuItem from '../models/MenuItem.js'
 import Restaurant from '../models/Restaurant.js'
 
 const getItemInfo = async (item) => {
     try {
-        const restaurant = await Restaurant.findById(item.provider)
+        const restaurant = await Restaurant.findById({ _id : item.provider})
         if (!restaurant) {
             throw new Error('restaurant not found')
         }

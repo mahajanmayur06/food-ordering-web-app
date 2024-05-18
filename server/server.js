@@ -16,7 +16,14 @@ app.use(cors(corsOptions))
 app.use(credentials);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use('/images', express.static(('images')))
 
+app.get('/', (req, res) => {
+    res.send(`<h1>Server ${PORT}</h1>`)
+})
+
+import uploadRouter from "./routes/upload.js";
+app.use('/', uploadRouter)
 
 mongoose.connection.once('open', () => {
     console.log('Connected to DB');
