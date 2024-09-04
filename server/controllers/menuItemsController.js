@@ -37,6 +37,19 @@ const getMenuItems = async (req, res) => {
     }
 }
 
+// const getMenuItems = async (req, res) => {
+//     try {
+//         const items = await MenuItem.find().lean(); 
+//         const menuItemsPromises = items.map(item => getItemInfo(item)); 
+//         const menuItems = await Promise.all(menuItemsPromises);
+
+//         res.status(200).json(menuItems);
+//     } catch (err) {
+//         console.error(err.message);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// };
+
 const getMenuItemsByCategory = async (req, res) => {
     const { category } = req.query
     try {
@@ -57,30 +70,35 @@ const getMenuItemsByCategory = async (req, res) => {
     }
 }
 
-const getMenuItemsByrestaurant = async (req, res) => {
+const getMenuItemsByRestaurant = async (req, res) => {
     const providerName = req.body.providerName;
     try {
-        const provider = await Restaurant.findOne({ name : providerName})
+        const provider = await Restaurant.findOne({ name: providerName });
+        if (!provider) {
+            return res.status(404).json({ message: 'Restaurant not found' });
+        }
         if (provider.menuItems.length === 0) {
-            res.status(204).json({ message : 'No items in menu'})
+            return res.status(204).json({ message: 'No items in menu' });
         }
-        let menuItems = []
-        for (const item of provider.menuItems) {
-            let itemInfo = await MenuItem.findById(item._id)
-            menuItems.push({
-                ...itemInfo,
-                providerName : provider.name,
-                location : provider.location,
-                deliveryPrice : provider.deliveryPrice,
-                estimatedDeliveryTime : provider.estimatedDeliveryTime
-            })
-        }
+
+        const menuItemsIds = provider.menuItems.map(item => item._id);
+        const menuItems = await MenuItem.find({ _id: { $in: menuItemsIds } });
+
+        const result = menuItems.map(itemInfo => ({
+            ...itemInfo.toObject(),
+            providerName: provider.name,
+            location: provider.location,
+            deliveryPrice: provider.deliveryPrice,
+            estimatedDeliveryTime: provider.estimatedDeliveryTime
+        }));
+
+        res.status(200).json(result);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Internal server error' });
     }
-    catch(err) {
-        console.log(err.message);
-        res.status(500).json({ message : 'internal serve error'})
-    }
-}
+};
+
 
 const getMenuItemsByName = async (req, res) => {
     const { name } = req.query
@@ -100,4 +118,13 @@ const getMenuItemsByName = async (req, res) => {
     }
 }
 
-export { addMenuItem, getMenuItems, getMenuItemsByCategory, getMenuItemsByrestaurant, getMenuItemsByCategory, getMenuItemsByName}
+const updatePrice = async (req, res) => {
+    const { menuItem} = req.body 
+    try {
+        const item = await MenuItem.findOne({ name : menuItem})
+    } catch (err) {
+        console.log(err.message);
+    }
+}
+
+export { addMenuItem, getMenuItems, getMenuItemsByCategory, getMenuItemsByRestaurant, getMenuItemsByCategory, getMenuItemsByName}
